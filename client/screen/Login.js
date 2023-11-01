@@ -40,7 +40,7 @@ function Login({ navigation }) {
   const handleSubmit = async () => {
     try {
       await login({ mail: formData.mail, password: formData.password });
-      navigation.navigate("UserProfile");
+      navigation.navigate("Landingpage");
     } catch (error) {
       console.error("Errore durante il login:", error);
       setLoginError("Invalid email or password. Please try again.");

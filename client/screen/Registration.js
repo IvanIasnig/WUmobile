@@ -47,7 +47,7 @@ function RegistrationApp({ navigation }) {
     try {
       await register(formData);
       await login({ mail: formData.mail, password: formData.password });
-      navigation.navigate("UserProfile");
+      navigation.navigate("Landingpage");
       console.log("Registrazione riuscita!");
     } catch (error) {
       console.error("Errore durante la registrazione:", error);
@@ -56,11 +56,10 @@ function RegistrationApp({ navigation }) {
 
   return (
     <ScrollView>
-    <ImageBackground
-      source={require("../images/gymLogin.jpg")} // Assicurati che il percorso sia corretto
-      style={styles.container}
-    >
-      
+      <ImageBackground
+        source={require("../images/gymLogin.jpg")}
+        style={styles.container}
+      >
         <View style={styles.card}>
           <Text style={styles.header}>Register</Text>
           {formFields.map((field, index) => (
@@ -78,8 +77,7 @@ function RegistrationApp({ navigation }) {
           ))}
           <Button title="Registra" onPress={handleSubmit} color="#000" />
         </View>
-      
-    </ImageBackground>
+      </ImageBackground>
     </ScrollView>
   );
 }

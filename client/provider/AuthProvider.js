@@ -50,10 +50,6 @@ function AuthProvider({ children }) {
         "http://192.168.0.75:3001/auth/register",
         userData
       );
-      const { token } = response.data;
-
-      await AsyncStorage.setItem("authToken", token);
-      setAuthToken(token);
     } catch (error) {
       console.error("Errore durante la registrazione:", error);
       throw error;
