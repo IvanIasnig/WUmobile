@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { useAuth } from "../provider/AuthProvider"; // Assicurati che il provider funzioni con React Native
 //import Logo from "../component/Logo"; // Questo componente dovrà essere anch'esso refactored per React Native
-//import gymLogin from "../images/gymLogin.jpg";
+import gymLogin from "../images/gymLogin.jpg";
 
 function Login({ navigation }) {
   const [formData, setFormData] = useState({
@@ -48,9 +48,7 @@ function Login({ navigation }) {
   };
 
   return (
-    <ImageBackground style={styles.backgroundImage}>
-      {" "}
-      {/* da inserire source={gymLogin} */}
+    <ImageBackground source={gymLogin} style={styles.backgroundImage}>
       <View style={styles.container}>
         {/* {logoVisible ? (
           <Logo />

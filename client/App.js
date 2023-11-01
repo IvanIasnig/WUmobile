@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Login from "./screen/Login";
 import { AuthProvider } from "./provider/AuthProvider";
+import Registration from "./screen/Registration";
 
 const Stack = createNativeStackNavigator();
 
@@ -12,6 +13,7 @@ function App() {
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Login">
           <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Registration" component={Registration} />
         </Stack.Navigator>
       </NavigationContainer>
     </AuthProvider>
