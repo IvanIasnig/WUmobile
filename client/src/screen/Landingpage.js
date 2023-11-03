@@ -20,27 +20,27 @@ function Landingpage() {
   const sections = [
     {
       label: "Diet",
-      link: "/userProfile/diet",
+      link: "Diet",
       backgroundImage: dietImage,
     },
     {
       label: "Workout",
-      link: "/userProfile/workout",
+      link: "Workout",
       backgroundImage: workoutImage,
     },
     {
       label: "Tables",
-      link: "/userProfile/tables",
+      link: "/Landingpage/tables",
       backgroundImage: statsImage,
     },
     {
       label: "Photos",
-      link: "/userProfile/photos",
+      link: "/Landingpage/photos",
       backgroundImage: photocameraImage,
     },
     {
       label: "Exercises",
-      link: "/userProfile/exercises",
+      link: "/Landingpage/exercises",
       backgroundImage: exercises,
     },
   ];

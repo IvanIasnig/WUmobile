@@ -32,6 +32,8 @@ function AuthProvider({ children }) {
       const { token, name, ...restOfData } = response.data;
 
       await AsyncStorage.setItem("authToken", token);
+      // console.log(".................");
+      // console.log(token);
       await AsyncStorage.setItem("name", name);
       await AsyncStorage.setItem("restOfData", JSON.stringify(restOfData));
 
