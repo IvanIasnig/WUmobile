@@ -30,7 +30,7 @@ function Landingpage() {
     },
     {
       label: "Tables",
-      link: "/Landingpage/tables",
+      link: "Tables",
       backgroundImage: statsImage,
     },
     {
@@ -40,7 +40,7 @@ function Landingpage() {
     },
     {
       label: "Exercises",
-      link: "/Landingpage/exercises",
+      link: "Exercises",
       backgroundImage: exercises,
     },
   ];

@@ -130,11 +130,61 @@ const Photo = () => {
     }
   };
 
+  const handleTakePhotoWeb = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      const video = document.createElement("video");
+      video.srcObject = stream;
+
+      // Aspetta che il video sia pronto per la riproduzione
+      video.onloadedmetadata = () => {
+        video.play();
+      };
+
+      // Aggiungi il video al body per vedere cosa sta registrando la camera (opzionale)
+      document.body.appendChild(video);
+
+      // Crea un pulsante per scattare la foto
+      const button = document.createElement("button");
+      button.textContent = "Scatta Foto";
+      document.body.appendChild(button);
+
+      // Aggiungi un gestore di eventi al pulsante per scattare una foto quando viene premuto
+      button.onclick = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas
+          .getContext("2d")
+          .drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        // Converte l'immagine del canvas in un Blob e poi esegue il caricamento
+        canvas.toBlob((blob) => {
+          handleUpload(URL.createObjectURL(blob));
+        }, "image/jpeg");
+
+        // Ferma lo stream della camera dopo che la foto è stata scattata
+        stream.getTracks().forEach((track) => track.stop());
+
+        // Rimuovi video e pulsante dopo aver scattato la foto
+        document.body.removeChild(video);
+        document.body.removeChild(button);
+      };
+    } catch (err) {
+      console.error("Accesso alla fotocamera rifiutato o errore:", err);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.button} onPress={handleImagePick}>
         <Text style={styles.buttonText}>Seleziona Foto</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity style={styles.button} onPress={handleTakePhotoWeb}>
+        <Text style={styles.buttonText}>Scatta Foto</Text>
+      </TouchableOpacity>
+
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.gridContainer}>
           {images.map((image, index) => (
