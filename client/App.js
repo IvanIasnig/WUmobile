@@ -7,6 +7,7 @@ import Registration from "./src/screen/Registration";
 import Landingpage from "./src/screen/Landingpage";
 import Diet from "./src/screen/Diet";
 import Workout from "./src/screen/Workout";
+import Photo from "./src/screen/Photo";
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +21,7 @@ function App() {
           <Stack.Screen name="Landingpage" component={Landingpage} />
           <Stack.Screen name="Diet" component={Diet} />
           <Stack.Screen name="Workout" component={Workout} />
+          <Stack.Screen name="Photo" component={Photo} />
         </Stack.Navigator>
       </NavigationContainer>
     </AuthProvider>

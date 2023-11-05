@@ -34,8 +34,8 @@ function Landingpage() {
       backgroundImage: statsImage,
     },
     {
-      label: "Photos",
-      link: "/Landingpage/photos",
+      label: "Photo",
+      link: "Photo",
       backgroundImage: photocameraImage,
     },
     {

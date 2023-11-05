@@ -33,6 +33,10 @@ public class JwtFilter extends OncePerRequestFilter {
 			throw new UnauthorizedException("Inserisci il token nell'autorization Header");
 		String token = header.substring(7);
 		System.out.println("Token: -> " + token);
+//		System.out.println(request.getHeader("Content-Type"));
+//		System.out.println(request.getHeader("Host"));
+//		System.out.println(request.getHeader("Content-Length"));
+		System.out.println(request);
 
 		jTools.verifyToken(token);
 		String id = jTools.extractSubject(token);
