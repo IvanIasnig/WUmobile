@@ -11,6 +11,7 @@ import axios from "axios";
 import bg from "../images/exercisesBg.jpg";
 import ExerciseCard from "../Component/ExerciseCard";
 import Loading from "../Component/Loading";
+import Navbar from "../Component/Navbar";
 // import Loading from "../component/Loading"; // Make sure you have a React Native compatible loading component
 
 function Exercises() {
@@ -71,6 +72,7 @@ function Exercises() {
 
   return (
     <ImageBackground source={bg} style={styles.backgroundImage}>
+      <Navbar />
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.pickerContainer}>
           <Picker

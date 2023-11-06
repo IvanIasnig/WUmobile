@@ -7,6 +7,7 @@ import {
   ImageBackground,
 } from "react-native";
 import workoutPlans from "../data/workoutPlan";
+import Navbar from "../Component/Navbar";
 
 // Import images differently for React Native
 const gymImages = [
@@ -25,6 +26,7 @@ function Workout() {
 
   return (
     <View style={styles.container}>
+      <Navbar />
       <Text style={styles.headerText}>Weekly Training</Text>
       <ScrollView style={styles.scrollView}>
         {Object.entries(userWorkoutPlan.week).map(([day, exercises], idx) => (

@@ -12,6 +12,7 @@ import { LineChart } from "react-native-chart-kit";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { jwtDecode } from "jwt-decode";
+import Navbar from "../Component/Navbar";
 
 const chartConfig = {
   backgroundGradientFrom: "#FFF",
@@ -199,6 +200,7 @@ function AllTables() {
 
   return (
     <ScrollView style={styles.scrollView}>
+      <Navbar />
       <View style={styles.container}>
         <Text>{responseMessage}</Text>
         <TextInput

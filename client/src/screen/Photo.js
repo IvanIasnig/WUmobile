@@ -13,6 +13,7 @@ import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
+import Navbar from "../Component/Navbar";
 
 const Photo = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -76,7 +77,6 @@ const Photo = () => {
   };
 
   useEffect(() => {
-    // Definisci una funzione asincrona all'interno di useEffect
     const fetchUserData = async () => {
       try {
         const token = await AsyncStorage.getItem("authToken");
@@ -177,6 +177,7 @@ const Photo = () => {
 
   return (
     <View style={styles.container}>
+      <Navbar />
       <TouchableOpacity style={styles.button} onPress={handleImagePick}>
         <Text style={styles.buttonText}>Seleziona Foto</Text>
       </TouchableOpacity>
