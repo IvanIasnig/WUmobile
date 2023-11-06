@@ -10,6 +10,7 @@ import {
 import axios from "axios";
 import bg from "../images/exercisesBg.jpg";
 import ExerciseCard from "../Component/ExerciseCard";
+import Loading from "../Component/Loading";
 // import Loading from "../component/Loading"; // Make sure you have a React Native compatible loading component
 
 function Exercises() {
@@ -64,9 +65,9 @@ function Exercises() {
     setExpandedId(expandedId === id ? null : id);
   };
 
-  //   if (isLoading) {
-  //     return <Loading />;
-  //   }
+  if (isLoading) {
+    return <Loading isVisible={true} />;
+  }
 
   return (
     <ImageBackground source={bg} style={styles.backgroundImage}>
@@ -75,7 +76,7 @@ function Exercises() {
           <Picker
             selectedValue={muscle}
             onValueChange={(itemValue, itemIndex) => {
-              setMuscle(itemValue); // Questo triggererà l'effetto collaterale
+              setMuscle(itemValue);
             }}
             style={styles.picker}
             mode="dropdown"
@@ -96,7 +97,7 @@ function Exercises() {
           data={help}
           renderItem={({ item, index }) => (
             <ExerciseCard
-              {...item} // Spreading delle props dell'oggetto item
+              {...item}
               isExpanded={expandedId === index}
               onToggle={() => handleExpandClick(index)}
             />
@@ -111,7 +112,7 @@ function Exercises() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "transparent", // you can change this to match your design
+    backgroundColor: "transparent",
   },
   header: {
     flexDirection: "row",
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 20,
     paddingTop: 10,
-    backgroundColor: "rgba(0,0,0,0.5)", // Or any other color with some transparency
+    backgroundColor: "rgba(0,0,0,0.5)",
   },
   headerTitle: {
     flex: 1,
