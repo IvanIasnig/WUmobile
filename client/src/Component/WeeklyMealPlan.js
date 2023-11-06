@@ -25,8 +25,9 @@ const WeeklyMealPlan = () => {
 
   const [foodData, setFoodData] = useState([]);
 
-  var grams = (grams) => {
-    return Math.floor((grams * totalKcal()) / 2000);
+  var grams = async (inputGrams) => {
+    const totalCalories = await totalKcal();
+    return Math.floor((inputGrams * totalCalories) / 2000);
   };
 
   const [totalCalories, setTotalCalories] = useState(0);
@@ -110,7 +111,7 @@ const WeeklyMealPlan = () => {
       const foods = response.data;
       console.log(foods);
       setFoodData(foods);
-      setAvailableFoods(foods.map((food) => food.foodItem));
+      setAvailableFoods([...new Set(foods.map((food) => food.foodItem))]);
     } catch (error) {
       console.error("Error fetching food data:", error);
     }
@@ -135,6 +136,7 @@ const WeeklyMealPlan = () => {
 
   async function totalKcal() {
     const rof = await AsyncStorage.getItem("restOfData");
+
     const jRof = JSON.parse(rof);
     let bmr = 0;
     if (jRof.sex === "M") {
@@ -198,8 +200,8 @@ const WeeklyMealPlan = () => {
       </View>
 
       <ScrollView>
-        {Object.entries(dayDiets).map(([day, meals], index) => (
-          <View key={index} style={styles.card}>
+        {Object.entries(dayDiets).map(([day, meals]) => (
+          <View key={day} style={styles.card}>
             <View style={styles.cardHeader}>
               <Text style={styles.cardHeaderText}>
                 {`${day} - Total Calories: ${calculateCaloriesForDay(
@@ -209,21 +211,21 @@ const WeeklyMealPlan = () => {
             </View>
             <View style={styles.cardBody}>
               {Object.entries(meals).map(([meal, details], index) => (
-                <View key={index} style={styles.row}>
+                <View key={`${day}-${meal}`} style={styles.row}>
                   <Text style={styles.mealText}>{mealArr(meal)}</Text>
                   <RNPickerSelect
-                    //style={pickerSelectStyles} // Use StyleSheet for styling
+                    //style={pickerSelectStyles} // Uncomment and define this style if you have it
                     onValueChange={(value) =>
                       handleInputChange(day, meal, "food", value)
                     }
-                    items={availableFoods.map((food) => ({
+                    items={availableFoods.map((food, index) => ({
                       label: food,
                       value: food,
+                      key: `${food}-${index}`,
                     }))}
                     value={details.food}
                     placeholder={{}}
                   />
-
                   <TextInput
                     style={styles.input}
                     placeholder="Grammi"

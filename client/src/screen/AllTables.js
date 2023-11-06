@@ -8,12 +8,11 @@ import {
   Dimensions,
   TextInput,
 } from "react-native";
-import { LineChart } from "react-native-chart-kit"; // Importazione di un componente di grafico
+import { LineChart } from "react-native-chart-kit";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { jwtDecode } from "jwt-decode"; // Assicurati che sia 'jwt-decode' senza parentesi graffe
+import { jwtDecode } from "jwt-decode";
 
-// Dati di esempio per i grafici
 const chartConfig = {
   backgroundGradientFrom: "#FFF",
   backgroundGradientTo: "#FFF",
@@ -28,6 +27,8 @@ function AllTables() {
   const [entries, setEntries] = useState([{ entryName: "", entryValue: "" }]);
   const [responseMessage, setResponseMessage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [entryName, setEntryName] = useState("");
+  const [entryValue, setEntryValue] = useState("");
 
   useEffect(() => {
     fetchData();
@@ -81,25 +82,45 @@ function AllTables() {
     }
   };
 
-  const renderCharts = () => {
-    return tables.map((table, index) => (
-      <View key={index} style={styles.chartContainer}>
-        <Text style={styles.chartTitle}>{table.name}</Text>
-        <LineChart
-          data={{
-            labels: table.entries.map((entry) => entry.entryName),
-            datasets: [
-              {
-                data: table.entries.map((entry) => entry.entryValue),
-              },
-            ],
-          }}
-          width={screenWidth}
-          height={220}
-          chartConfig={chartConfig}
-        />
-      </View>
-    ));
+  const addEntryToTable = async (tableId, entryName, entryValue) => {
+    try {
+      const token = await AsyncStorage.getItem("authToken");
+      await axios.post(
+        `http://localhost:3001/user/customtables/${tableId}/entries`,
+        {
+          entryName,
+          entryValue,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      await fetchData();
+    } catch (error) {
+      console.error("Errore nell'aggiungere l'entry:", error);
+    }
+  };
+
+  const deleteTable = async (tableId) => {
+    const token = await AsyncStorage.getItem("authToken");
+    try {
+      const response = await axios.delete(
+        `http://localhost:3001/user/customtables/${tableId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log(response.data);
+      await fetchData();
+    } catch (error) {
+      console.error("Errore nell'eliminare la tabella: ", error);
+    }
   };
 
   const handleTableNameChange = (text) => {
@@ -118,12 +139,63 @@ function AllTables() {
     setEntries(newEntries);
   };
 
-  // Aggiungi un metodo per gestire l'aggiunta di nuove voci
   const addEntryField = () => {
     setEntries([...entries, { entryName: "", entryValue: "" }]);
   };
 
-  // Resto della logica del componente...
+  const renderCharts = () => {
+    return tables.map((table, index) => (
+      <View key={index} style={styles.chartContainer}>
+        <Text style={styles.chartTitle}>{table.name}</Text>
+        <LineChart
+          data={{
+            labels: table.entries.map((entry) => entry.entryName),
+            datasets: [
+              {
+                data: table.entries.map((entry) =>
+                  parseFloat(entry.entryValue)
+                ),
+              },
+            ],
+          }}
+          width={screenWidth}
+          height={220}
+          chartConfig={chartConfig}
+        />
+        <View style={styles.entryFormContainer}>
+          <TextInput
+            placeholder="Entry Name"
+            value={entryName}
+            style={styles.input}
+            onChangeText={(text) => setEntryName(text)}
+          />
+          <TextInput
+            placeholder="Entry Value"
+            keyboardType="numeric"
+            value={entryValue}
+            style={styles.input}
+            onChangeText={(text) => setEntryValue(text)}
+          />
+          <Button
+            title="Add Entry"
+            onPress={() => {
+              addEntryToTable(table.id, entryName, entryValue);
+              setEntryName("");
+              setEntryValue("");
+            }}
+          />
+        </View>
+        <View>
+          <Button
+            title="Delete Table"
+            onPress={() => {
+              deleteTable(table.id);
+            }}
+          />
+        </View>
+      </View>
+    ));
+  };
 
   return (
     <ScrollView style={styles.scrollView}>

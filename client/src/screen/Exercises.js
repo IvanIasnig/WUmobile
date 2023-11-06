@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
 import {
   View,
-  Text,
   StyleSheet,
   FlatList,
-  TouchableOpacity,
   ImageBackground,
   Picker,
-  Button,
   SafeAreaView,
-  StatusBar,
 } from "react-native";
 import axios from "axios";
+import bg from "../images/exercisesBg.jpg";
+import ExerciseCard from "../Component/ExerciseCard";
 // import Loading from "../component/Loading"; // Make sure you have a React Native compatible loading component
 
 function Exercises() {
@@ -19,7 +17,6 @@ function Exercises() {
   const [muscle, setMuscle] = useState("");
   const [expandedId, setExpandedId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  //const exeBg = "../images/exercisesBg.jpg"; // Make sure the image is added to your project
 
   const muscles = [
     "abdominals",
@@ -61,7 +58,7 @@ function Exercises() {
 
   useEffect(() => {
     exe();
-  }, []);
+  }, [muscle]);
 
   const handleExpandClick = (id) => {
     setExpandedId(expandedId === id ? null : id);
@@ -72,22 +69,16 @@ function Exercises() {
   //   }
 
   return (
-    <ImageBackground
-      //source={require(exeBg)} // Ensure the image is in the correct folder
-      style={styles.backgroundImage}
-    >
+    <ImageBackground source={bg} style={styles.backgroundImage}>
       <SafeAreaView style={styles.safeArea}>
-        <StatusBar barStyle="light-content" />
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>Exercise Finder</Text>
-          <Button title="Cerca" onPress={() => exe()} color="#06bcee" />
-        </View>
         <View style={styles.pickerContainer}>
           <Picker
             selectedValue={muscle}
-            onValueChange={(itemValue) => setMuscle(itemValue)}
+            onValueChange={(itemValue, itemIndex) => {
+              setMuscle(itemValue); // Questo triggererà l'effetto collaterale
+            }}
             style={styles.picker}
-            mode="dropdown" // Android only
+            mode="dropdown"
           >
             <Picker.Item label="Select Muscle Group" value="" />
             {muscles.map((muscleOption) => (
@@ -104,27 +95,11 @@ function Exercises() {
         <FlatList
           data={help}
           renderItem={({ item, index }) => (
-            <View style={styles.card}>
-              <Text style={styles.title}>{item.name}</Text>
-              <View style={styles.detailsContainer}>
-                <Text style={styles.detail}>Difficulty: {item.difficulty}</Text>
-                <Text style={styles.detail}>Muscle: {item.muscle}</Text>
-                <Text style={styles.detail}>Equipment: {item.equipment}</Text>
-                {expandedId === index && (
-                  <Text style={styles.instructions}>
-                    Instructions: "{item.instructions}"
-                  </Text>
-                )}
-              </View>
-              <TouchableOpacity
-                style={expandedId === index ? styles.buttonOpen : styles.button}
-                onPress={() => handleExpandClick(index)}
-              >
-                <Text style={styles.buttonText}>
-                  {expandedId === index ? "Close" : "Read all"}
-                </Text>
-              </TouchableOpacity>
-            </View>
+            <ExerciseCard
+              {...item} // Spreading delle props dell'oggetto item
+              isExpanded={expandedId === index}
+              onToggle={() => handleExpandClick(index)}
+            />
           )}
           keyExtractor={(item, index) => index.toString()}
         />
@@ -136,6 +111,38 @@ function Exercises() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
+    backgroundColor: "transparent", // you can change this to match your design
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    paddingTop: 10,
+    backgroundColor: "rgba(0,0,0,0.5)", // Or any other color with some transparency
+  },
+  headerTitle: {
+    flex: 1,
+    fontSize: 24,
+    fontWeight: "700",
+    color: "#fff",
+    textAlign: "left",
+  },
+  searchButton: {
+    backgroundColor: "#06bcee",
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  searchButtonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "600",
   },
   backgroundImage: {
     flex: 1,
